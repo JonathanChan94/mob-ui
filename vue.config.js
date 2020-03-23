@@ -10,11 +10,15 @@ module.exports = {
     }
   },
   configureWebpack: config => ({
-    devtool: false
+    devtool: false,
+    resolve: {
+      symlinks: false
+    }
   }),
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('./examples'))
+      // .set('symlinks', false)
     config.module
       .rule('js')
       .include

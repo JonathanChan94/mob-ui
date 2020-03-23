@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .api-button
   margin 0 auto
   width 480px

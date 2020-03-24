@@ -18,7 +18,6 @@ module.exports = {
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('./examples'))
-      // .set('symlinks', false)
     config.module
       .rule('js')
       .include

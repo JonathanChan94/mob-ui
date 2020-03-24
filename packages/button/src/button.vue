@@ -30,6 +30,8 @@ export default {
 </script>
 
 <style lang="stylus">
+$imgUrl = '../../../examples/assets/'
+
 .api-button
   margin 0 auto
   width 480px
@@ -55,7 +57,7 @@ export default {
     display block
     width 32px
     height 32px
-    // background url($imgUrl + 'button-loading.png') no-repeat
+    background url($imgUrl + 'button-loading.png') no-repeat
     background-size contain
     animation rotating 2s linear infinite
   span

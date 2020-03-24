@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import MobButton from '../packages/button/index.js'
+import MobUI from '../packages/index'
+// import '../packages/index'
 
-Vue.use(MobButton)
+Vue.use(MobUI)
 
 Vue.config.productionTip = false
 

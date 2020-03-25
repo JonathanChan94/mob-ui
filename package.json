@@ -1,6 +1,6 @@
 {
   "name": "mob-vue-ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "main": "lib/index/index.js",
   "files": [
@@ -37,36 +37,6 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/standard"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {},
-      "postcss-px-to-viewport": {
-        "viewportWidth": 750,
-        "unitPrecision": 3,
-        "viewportUnit": "vw",
-        "selectorBlackList": [
-          ".ignore",
-          ".hairlines"
-        ],
-        "minPixelValue": 1,
-        "mediaQuery": false
-      }
-    }
   },
   "browserslist": [
     "> 1%",

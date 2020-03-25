@@ -1,0 +1,10 @@
+{
+  "index": "./packages/index.js",
+  "button": "./packages/button/index.js",
+  "form": "./packages/form/index.js",
+  "formItem": "./packages/form-item/index.js",
+  "input": "./packages/input/index.js",
+  "loading": "./packages/loading/index.js",
+  "scroll": "./packages/scroll/index.js",
+  "toast": "./packages/toast/index.js"
+}

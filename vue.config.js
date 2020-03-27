@@ -2,7 +2,6 @@ const path = require('path')
 const resolve = file => path.resolve(__dirname, file)
 const lib = process.env.TARGET_LIB === 'true'
 const comps = require('./component.json')
-const compNames = Object.keys(comps)
 
 const pages = lib ? {
   ...comps
@@ -12,6 +11,9 @@ const pages = lib ? {
 
 const configure = lib ? {
   devtool: false,
+  entry: {
+    ...pages
+  },
   output: {
     filename: '[name]/index.js',
     library: 'mobui',
@@ -25,12 +27,11 @@ const configure = lib ? {
 const chain = lib ? config => {
   config.entryPoints.delete('app')
   config.optimization.delete('splitChunks')
+  config.optimization.minimize(false)
   config.plugins.delete('copy')
-  compNames.map(name => {
-    config.plugins.delete(`html-${name}`)
-    config.plugins.delete(`preload-${name}`)
-    config.plugins.delete(`prefetch-${name}`)
-  })
+  config.plugins.delete('html')
+  config.plugins.delete('preload')
+  config.plugins.delete('prefetch')
   config.resolve.alias
     .set('@', resolve('./examples'))
   config.module
@@ -59,9 +60,6 @@ const chain = lib ? config => {
 }
 
 module.exports = {
-  pages: {
-    ...pages
-  },
   outputDir: lib ? 'lib' : 'dist',
   css: {
     extract: lib ? {

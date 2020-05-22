@@ -3,7 +3,7 @@
     <input
       :value="currentValue"
       :type="type"
-      :placeholder="placeholder"
+      v-bind="$attrs"
       class="api-input"
       @focus="handleFocus"
       @input="handleInput"
@@ -25,8 +25,7 @@ export default {
     type: {
       type: String,
       default: 'text'
-    },
-    placeholder: String
+    }
   },
   data () {
     return {

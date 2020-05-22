@@ -6,5 +6,6 @@
   "input": "./packages/input/index.js",
   "loading": "./packages/loading/index.js",
   "scroll": "./packages/scroll/index.js",
-  "toast": "./packages/toast/index.js"
+  "toast": "./packages/toast/index.js",
+  "calendar": "./packages/calendar/index.js"
 }

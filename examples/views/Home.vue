@@ -1,11 +1,7 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <mob-button @click="handleClick">button</mob-button>
-    <!-- <mob-input v-model="val" placeholder="请输入"></mob-input> -->
-    <mob-scroll ref="scroll" :canPull="true" @load="load">
-      <div class="content"></div>
-    </mob-scroll>
+    <mob-button @click="handleClick1">open toast</mob-button>
+    <mob-button @click="handleClick2">open loading</mob-button>
   </div>
 </template>
 
@@ -17,16 +13,23 @@ export default {
       val: ''
     }
   },
-  created () {
-    this.$loading.open({
-      autoClose: true,
-      duration: 2000
+  mounted () {
+    window.addEventListener('touchmove', (e) => {
+      e.preventDefault()
     })
   },
   methods: {
-    handleClick () {
-      this.$toast({
-        message: 'u clicked the button u clicked the button u clicked the button'
+    handleClick1 () {
+      /* eslint-disable */
+      WeixinJSBridge.call('closeWindow');
+      // this.$toast({
+      //   message: 'u clicked the button'
+      // })
+    },
+    handleClick2 () {
+      this.$loading.open({
+        autoClose: true,
+        duration: 2000
       })
     },
     load () {

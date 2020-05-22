@@ -3,26 +3,30 @@ const resolve = file => path.resolve(__dirname, file)
 const lib = process.env.TARGET_LIB === 'true'
 const comps = require('./component.json')
 
-const pages = lib ? {
-  ...comps
-} : {
-  index: './examples/main.js'
-}
-
 const configure = lib ? {
   devtool: false,
   entry: {
-    ...pages
+    ...comps
   },
   output: {
     filename: '[name]/index.js',
     library: 'mobui',
     libraryTarget: 'umd'
   },
+  externals: {
+    vue: {
+      root: 'Vue',
+      commonjs: 'vue',
+      commonjs2: 'vue',
+      amd: 'vue'
+    }
+  },
   resolve: {
     symlinks: false
   }
-} : {}
+} : {
+  entry: './examples/main.js'
+}
 
 const chain = lib ? config => {
   config.entryPoints.delete('app')
@@ -65,6 +69,9 @@ module.exports = {
     extract: lib ? {
       filename: '[name]/style.css'
     } : true
+  },
+  devServer: {
+    port: '7070'
   },
   configureWebpack: configure,
   chainWebpack: chain

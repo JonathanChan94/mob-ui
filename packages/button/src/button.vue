@@ -33,7 +33,7 @@ export default {
 $imgUrl = '../../../examples/assets/'
 
 .api-button
-  margin 0 auto
+  margin 20px auto
   width 480px
   height 100px
   line-height 100px

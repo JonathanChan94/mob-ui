@@ -36,11 +36,8 @@ export default {
   data () {
     return {
       parent: null,
-      state: 1, // 1 加载更多 2 等待手松开 3 加载中 3 到底了
+      loadState: 1, // 1 加载更多 2 等待手松开 3 加载中 3 到底了
       startY: 0,
-      winHeight: 0,
-      height: 0,
-      offsetTop: 0,
       diff: 0,
       top: 0,
       isPullUp: false,
@@ -57,7 +54,7 @@ export default {
   },
   computed: {
     stateText () {
-      switch (this.state) {
+      switch (this.loadState) {
         case 1:
           return '上拉加载更多'
         case 2:
@@ -96,14 +93,15 @@ export default {
   },
   mounted () {
     this.parent = this.$refs.container.parentNode
-    console.log(this.parent)
+    this.reloadHeight = this.$refs.reload.offsetHeight
+    this.reloadTop = -this.reloadHeight
     this.$refs.wrapper.addEventListener('touchstart', this.touchStart)
     this.$refs.wrapper.addEventListener('touchmove', this.touchMove)
     this.$refs.wrapper.addEventListener('touchend', this.touchEnd)
     // 创建一个intersection observer,在监测的元素完全可见以及完全不可见时触发回调
     this.observer = new IntersectionObserver(this.observerCb, {
       root: this.parent,
-      threshold: [0, 1]
+      threshold: [0, 0.99]
     })
   },
   beforeDestroy () {
@@ -113,7 +111,7 @@ export default {
   methods: {
     observerCb (entries) {
       entries.forEach(item => {
-        console.log(item.target, item.intersectionRatio)
+        // console.log(item.target, item.intersectionRatio)
         if (item.target === this.$refs.top) {
           if (item.intersectionRatio > 0) {
             this.pullDown = true
@@ -122,7 +120,7 @@ export default {
             this.pullDown = false
           }
         } else if (item.target === this.$refs.bottom) {
-          if (item.intersectionRatio === 1) {
+          if (item.intersectionRatio > 0.99) {
             if (this.pullUp) return
             this.firstToBottom = true
             this.pullUp = true
@@ -134,10 +132,19 @@ export default {
     },
     loadEnd (end = false) {
       if (end) {
-        this.state = 4
+        this.loadState = 4
       } else {
-        this.state = 1
+        this.loadState = 1
       }
+    },
+    reloadEnd () {
+      this.isBounce = true
+      this.reloadState = 1
+      this.reloadTop = -this.reloadHeight
+      this.top = 0
+      setTimeout(() => {
+        this.isBounce = false
+      }, 300)
     },
     touchStart (e) {
       this.startY = e.touches[0].clientY
@@ -149,12 +156,19 @@ export default {
       if (this.pullUp && posY > this.startY) return
       e.preventDefault()
       if (this.pullDown) {
+        this.parent.scrollTop = 0
+        if (this.reloadState === 3) return
         if (this.firstToTop) {
           this.startY = e.touches[0].clientY
           this.firstToTop = false
         }
         this.diff = posY - this.startY
         this.top = Math.pow(this.diff, 0.82)
+        this.reloadTop = this.top - this.reloadHeight
+        if (this.top >= this.reloadHeight) {
+          this.reloadTop = 0
+          this.reloadState = 2
+        }
       } else if (this.pullUp) {
         if (this.firstToBottom) {
           this.startY = e.touches[0].clientY
@@ -162,9 +176,9 @@ export default {
         }
         this.diff = this.startY - e.touches[0].clientY
         this.top = -Math.pow(this.diff, 0.82)
-        if (this.state === 3 || this.state === 4) return
+        if (this.loadState === 3 || this.loadState === 4) return
         if (this.diff > 60) {
-          this.state = 2
+          this.loadState = 2
         }
       }
     },
@@ -173,8 +187,8 @@ export default {
         this.isBounce = true
         this.top = 0
         this.pullUp = false
-        if (this.state === 2) {
-          this.state = 3
+        if (this.loadState === 2) {
+          this.loadState = 3
           this.$emit('load')
         }
         setTimeout(() => {
@@ -182,7 +196,15 @@ export default {
         }, 300)
       } else if (this.pullDown) {
         this.isBounce = true
-        this.top = 0
+        if (this.reloadState === 2) {
+          this.top = this.reloadHeight
+          this.reloadTop = 0
+          this.reloadState = 3
+          this.$emit('reload')
+        } else {
+          this.reloadTop = -this.reloadHeight
+          this.top = 0
+        }
         setTimeout(() => {
           this.isBounce = false
         }, 300)
@@ -202,7 +224,7 @@ export default {
     transition all .3s ease
   .scroll-wrapper-top
     width 100%
-    height 2px
+    height 1px
 
 .scroll-reload
   width 100%

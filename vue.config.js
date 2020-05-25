@@ -38,6 +38,7 @@ const chain = lib ? config => {
   config.plugins.delete('prefetch')
   config.resolve.alias
     .set('@', resolve('./examples'))
+    .set('pack', resolve('./packages'))
   config.module
     .rule('js')
     .include

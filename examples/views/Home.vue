@@ -20,11 +20,9 @@ export default {
   },
   methods: {
     handleClick1 () {
-      /* eslint-disable */
-      WeixinJSBridge.call('closeWindow');
-      // this.$toast({
-      //   message: 'u clicked the button'
-      // })
+      this.$toast({
+        message: 'u clicked the button'
+      })
     },
     handleClick2 () {
       this.$loading.open({

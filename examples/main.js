@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import MobUI from '../packages/index'
 
-import './utils/vconsole'
+// import './utils/vconsole'
 
 Vue.use(MobUI)
 

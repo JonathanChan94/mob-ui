@@ -1,10 +1,10 @@
 <template>
-  <div
+  <button
     :class="['api-button', type, loading ? 'is-loading' : '']"
     @click="handleClick">
     <span v-if="loading" class="loading"></span>
     <span><slot></slot></span>
-  </div>
+  </button>
 </template>
 
 <script>
@@ -33,6 +33,9 @@ export default {
 $imgUrl = '../../../examples/assets/'
 
 .api-button
+  appearance none
+  outline none
+  border none
   margin 20px auto
   width 480px
   height 100px

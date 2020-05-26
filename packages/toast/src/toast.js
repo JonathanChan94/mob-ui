@@ -3,11 +3,11 @@ import ToastVue from './toast.vue'
 
 const ToastConstructor = Vue.extend(ToastVue)
 
-const Toast = ({ message, duration }) => {
+const Toast = ({ message = '', duration = 2000 }) => {
   const instance = new ToastConstructor({
     data: {
       message,
-      duration: duration || 2000
+      duration
     }
   })
 

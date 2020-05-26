@@ -15,11 +15,18 @@ export default {
       duration: 3000
     }
   },
+  created () {
+    this.show = true
+    if (this.autoClose) {
+      this.countDown()
+    }
+  },
   methods: {
     countDown () {
       if (this.autoClose) {
         setTimeout(() => {
           this.show = false
+          this.$emit('close')
         }, this.duration)
       }
     }

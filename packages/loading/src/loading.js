@@ -2,23 +2,26 @@ import Vue from 'vue'
 import LoadingVue from './loading.vue'
 
 const LoadingConstructor = Vue.extend(LoadingVue)
-const instance = new LoadingConstructor()
+let instance = null
 
 const Loading = {
   open ({ autoClose = false, duration = 3000 } = {}) {
+    instance = new LoadingConstructor({
+      data: {
+        autoClose,
+        duration
+      }
+    })
     instance.$mount()
     document.body.appendChild(instance.$el)
-    instance.show = true
-    if (autoClose) {
-      instance.autoClose = autoClose
-      instance.duration = duration
-      instance.countDown()
-    }
+    instance.$on('close', () => {
+      this.close()
+    })
   },
   close () {
-    instance.show = false
-    document.body.removeChild(instance.$el)
     instance.$destroy()
+    document.body.removeChild(instance.$el)
+    instance = null
   }
 }
 

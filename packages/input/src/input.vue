@@ -39,7 +39,7 @@ export default {
     }
   },
   methods: {
-    handleFocus () {
+    handleFocus (event) {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
       this.$emit('focus', event)
     },

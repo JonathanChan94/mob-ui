@@ -2,13 +2,19 @@ import { shallowMount } from '@vue/test-utils'
 import Button from '../../packages/button/src/button.vue'
 
 describe('button.vue', () => {
+  let wrapper
+  afterEach(() => {
+    wrapper.vm.$destroy()
+    wrapper.destroy()
+  })
+
   it('1: button render', () => {
-    const wrapper = shallowMount(Button)
+    wrapper = shallowMount(Button)
     expect(wrapper.contains('button.dark')).toBe(true)
   })
 
   it('2: button loading', async () => {
-    const wrapper = shallowMount(Button)
+    wrapper = shallowMount(Button)
 
     wrapper.setProps({
       loading: true
@@ -26,7 +32,7 @@ describe('button.vue', () => {
   })
 
   it('3: button slot', () => {
-    const wrapper = shallowMount(Button, {
+    wrapper = shallowMount(Button, {
       slots: {
         default: 'click me'
       }
@@ -36,7 +42,7 @@ describe('button.vue', () => {
 
   it('4: button click', () => {
     const fn = jest.fn()
-    const wrapper = shallowMount(Button)
+    wrapper = shallowMount(Button)
     wrapper.vm.$on('click', fn)
 
     wrapper.find('button').trigger('click')

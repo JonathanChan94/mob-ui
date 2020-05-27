@@ -2,14 +2,20 @@ import { shallowMount } from '@vue/test-utils'
 import Input from '../../packages/input/src/input.vue'
 
 describe('input.vue', () => {
+  let wrapper
+  afterEach(() => {
+    wrapper.vm.$destroy()
+    wrapper.destroy()
+  })
+
   it('1: input render', () => {
-    const wrapper = shallowMount(Input)
+    wrapper = shallowMount(Input)
     expect(wrapper.contains('.api-input-wrapper')).toBe(true)
     expect(wrapper.contains('input')).toBe(true)
   })
 
   it('2: input value', async () => {
-    const wrapper = shallowMount(Input, {
+    wrapper = shallowMount(Input, {
       propsData: {
         value: 'test'
       }
@@ -25,7 +31,7 @@ describe('input.vue', () => {
   })
 
   it('3: input type', () => {
-    const wrapper = shallowMount(Input, {
+    wrapper = shallowMount(Input, {
       propsData: {
         type: 'textarea'
       }
@@ -34,30 +40,33 @@ describe('input.vue', () => {
   })
 
   it('4: input event', () => {
-    let value = '1'
-    const func = (val) => {
-      value = val
-    }
-    const wrapper = shallowMount(Input, {
-      propsData: {
-        value
-      }
-    })
-    const inputEle = wrapper.find('input')
-    wrapper.vm.$on('input', func)
-    wrapper.vm.$on('change', func)
+    const func1 = jest.fn()
+    const func2 = jest.fn()
 
-    expect(value).toBe('1')
+    wrapper = shallowMount(Input)
+    const inputEle = wrapper.find('input')
+    wrapper.vm.$on('input', func1)
+    wrapper.vm.$on('change', func1)
+    wrapper.vm.$on('blur', func2)
+    wrapper.vm.$on('focus', func2)
 
     const dispatch = (text, event) => {
       inputEle.element.value = text
       inputEle.element.dispatchEvent(new Event(event))
     }
 
-    dispatch('2', 'input')
-    expect(value).toBe('2')
+    dispatch('1', 'input')
+    expect(func1).toBeCalledTimes(1)
+    expect(func1).toBeCalledWith('1')
 
-    dispatch('3', 'change')
-    expect(value).toBe('3')
+    dispatch('2', 'change')
+    expect(func1).toBeCalledTimes(2)
+    expect(func1).toBeCalledWith('2')
+
+    dispatch('3', 'focus')
+    expect(func2).toBeCalledTimes(1)
+
+    dispatch('4', 'blur')
+    expect(func2).toBeCalledTimes(2)
   })
 })

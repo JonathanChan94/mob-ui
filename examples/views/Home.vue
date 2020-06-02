@@ -6,6 +6,9 @@
 </template>
 
 <script>
+import MobUI from '../../packages/index'
+const { Toast } = MobUI
+
 export default {
   name: 'Home',
   data () {
@@ -20,7 +23,7 @@ export default {
   },
   methods: {
     handleClick1 () {
-      this.$toast({
+      Toast({
         message: 'u clicked the button'
       })
     },
@@ -29,11 +32,6 @@ export default {
         autoClose: true,
         duration: 2000
       })
-    },
-    load () {
-      setTimeout(() => {
-        this.$refs.scroll.loadEnd(true)
-      }, 2000)
     }
   }
 }

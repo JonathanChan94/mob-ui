@@ -4,4 +4,8 @@ export declare class FormItem extends MobUIComp {
   prop: string
 
   label: string
+
+  onBlur(): void
+
+  onChange(): void
 }

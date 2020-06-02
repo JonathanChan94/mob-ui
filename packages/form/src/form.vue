@@ -36,28 +36,42 @@ export default {
       this.formItems.push(val)
     },
     validate (callback) {
-      return new Promise(resolve => {
-        let valid = true
-        let count = 0
-        if (this.formItems.length === 0) {
-          callback(valid)
-          return
-        }
-        this.formItems.forEach(item => {
-          item.validate('', error => {
-            count++
-            if (error) {
-              valid = false
-            }
-            if (count === this.formItems.length) {
-              if (typeof callback === 'function') {
-                callback(valid)
-              }
-              resolve(valid)
-            }
-          })
+      const modelKeys = Object.keys(this.model)
+      if (modelKeys.length === 0) {
+        console.warn('model is required for validate to work!')
+        return
+      }
+
+      let promise
+      if (typeof callback !== 'function') {
+        promise = new Promise((resolve, reject) => {
+          callback = function (valid) {
+            valid ? resolve(valid) : reject(valid)
+          }
+        })
+      }
+
+      let valid = true
+      let count = 0
+      if (this.formItems.length === 0) {
+        callback(valid)
+      }
+
+      this.formItems.forEach(item => {
+        item.validate('', error => {
+          count++
+          if (error) {
+            valid = false
+          }
+          if (count === this.formItems.length) {
+            callback(valid)
+          }
         })
       })
+
+      if (promise) {
+        return promise
+      }
     }
   }
 }

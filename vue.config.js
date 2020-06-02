@@ -11,7 +11,8 @@ const configure = lib ? {
   output: {
     filename: '[name]/index.js',
     library: 'mobui',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    libraryExport: 'default'
   },
   externals: {
     vue: {

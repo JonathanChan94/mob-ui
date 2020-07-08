@@ -42,8 +42,10 @@
   ],
   "files": [
     "lib/*",
+    "types/*",
     "package.json",
     "README.md"
   ],
-  "main": "lib/index/index.js"
+  "main": "lib/index/index.js",
+  "typings": "types/index.d.ts"
 }

@@ -37,6 +37,7 @@ export default {
   MobFormItem,
   MobForm,
   MobScroll,
+  MobCalendar,
   Loading,
   Toast
 }
